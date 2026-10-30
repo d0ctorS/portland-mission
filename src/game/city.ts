@@ -40,7 +40,7 @@ export class City {
     s.add.particles(st.x-270,st.y+68,'snow',{speedX:{min:-20,max:10},speedY:{min:-45,max:-20},lifespan:2000,frequency:350,scale:{start:3,end:12},alpha:{start:.2,end:0}}).setDepth(st.y+146);
     label(st.x-125,st.y-12,'ОТПРАВЛЕНИЕ  •  23:40\nРОСТОВ-ГЛАВНЫЙ  •  ПУТЬ 3');
     label(center(locations.start).x+80,center(locations.start).y-90,'МОСКВА • −7 °C\nФутболка сама себя не доставит');
-    for(const [x,y,txt] of [[11,23,'↗ Футбольный двор'],[23,13,'Вокзал где-то на юго-востоке ↘'],[15,5,'ТУПИК? Зато бесплатно.'],[29,25,'РОСТОВ — ТУДА →']] as const) if(!this.grid[y][x])label(x*CELL+48,y*CELL+10,txt);
+    for(const [x,y,txt] of [[7,25,'ФУТБОЛКА ↑   •   СДЭК ←'],[7,5,'Футбольный двор →'],[33,15,'Вокзал ↓'],[13,17,'ТУПИК? Зато бесплатно.'],[29,25,'РОСТОВ — ТУДА →']] as const) if(!this.grid[y][x])label(x*CELL+48,y*CELL+10,txt);
   }
 }
 export function snow(s:Phaser.Scene) {
