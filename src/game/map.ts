@@ -3,7 +3,7 @@ export const locations = { start:{x:1,y:29}, cdek:{x:5,y:25}, owner:{x:35,y:3}, 
 export type Point = {x:number,y:number};
 export const center = (p:Point) => ({x:p.x*CELL+CELL/2,y:p.y*CELL+CELL/2});
 export function createMaze() {
-  let seed = 7417;
+  let seed = 7217;
   const random = () => { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; };
   const grid = Array.from({length:ROWS},()=>Array(COLS).fill(1) as number[]);
   const visit = (x:number,y:number) => {
@@ -15,7 +15,7 @@ export function createMaze() {
     }
   };
   visit(1,29);
-  for(let i=0;i<30;i++) {
+  for(let i=0;i<4;i++) {
     const x=2+Math.floor(random()*(COLS-4)), y=2+Math.floor(random()*(ROWS-4));
     if((grid[y][x-1]===0&&grid[y][x+1]===0)||(grid[y-1][x]===0&&grid[y+1][x]===0)) grid[y][x]=0;
   }

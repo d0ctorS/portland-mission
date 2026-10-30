@@ -17,7 +17,7 @@ export class City {
         for(let i=0;i<5;i++){g.fillStyle(0xe5edef,.25);g.fillRect(px+(hash+i*17)%80+9,py+(hash*3+i*23)%80+8,3,2);}
         if(hash<9&&!Object.values(locations).some(p=>Math.abs(p.x-x)<2&&Math.abs(p.y-y)<2)) {
           // Roadside decoration never occupies the 60px-wide navigable centre.
-          s.add.image(px+16,py+29,'car').setDepth(py+53);
+          s.add.image(px+16,py+29,'car').setDepth(py+53);const carBody=s.add.rectangle(px+16,py+29,24,46,0,0);s.physics.add.existing(carBody,true);this.walls.add(carBody);
         }
         if(x%6===1&&y%4===1){s.add.image(px+81,py+18,'lamp').setDepth(py+49);s.add.circle(px+80,py-8,35,0xffdf9b,.1).setDepth(py+51).setBlendMode(Phaser.BlendModes.ADD);}
         if(hash===15){for(let i=0;i<5;i++){g.fillStyle(0xdbe8e6,.7);g.fillRect(px+18+i*12,py+38,6,22);}}
@@ -36,7 +36,7 @@ export class City {
     for(let i=0;i<41;i++){g.fillStyle(0x566c80);g.fillRect(st.x-285+i*17,st.y+85,5,35);}
     const train=s.add.graphics();train.fillStyle(0x24384f);train.fillRect(-200,5,700,50);train.fillStyle(0xbccad1);train.fillRoundedRect(-200,-35,700,75,12);train.fillStyle(0xad5660);train.fillRect(-200,12,700,12);train.fillStyle(0xe4edf0);train.fillRect(-194,-35,685,9);
     for(let i=0;i<19;i++){train.fillStyle(0x425e77);train.fillRect(-180+i*35,-20,25,25);train.fillStyle(0xf4ce8d);train.fillRect(-177+i*35,-17,19,19);train.fillStyle(0x536778);train.fillCircle(-178+i*35,43,7);}
-    this.train=s.add.container(st.x-90,st.y+108,[train]).setDepth(st.y+145);
+    this.train=s.add.container(st.x-90,st.y+108,[train]).setDepth(st.y+145);const railBody=s.add.rectangle(st.x+60,st.y+120,700,80,0,0);s.physics.add.existing(railBody,true);this.walls.add(railBody);
     s.add.particles(st.x-270,st.y+68,'snow',{speedX:{min:-20,max:10},speedY:{min:-45,max:-20},lifespan:2000,frequency:350,scale:{start:3,end:12},alpha:{start:.2,end:0}}).setDepth(st.y+146);
     label(st.x-125,st.y-12,'ОТПРАВЛЕНИЕ  •  23:40\nРОСТОВ-ГЛАВНЫЙ  •  ПУТЬ 3');
     label(center(locations.start).x+80,center(locations.start).y-90,'МОСКВА • −7 °C\nФутболка сама себя не доставит');

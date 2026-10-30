@@ -1,9 +1,9 @@
 export type Hero = 'sanya' | 'mark';
 export const heroName = (h: Hero) => h === 'sanya' ? 'Санёк' : 'Марк';
 export class Inventory {
-  shirt = false; chocolate = false;
-  takeShirt() { if (this.shirt || this.chocolate) return false; this.shirt = true; return true; }
-  deliver() { if (!this.shirt || this.chocolate) return false; this.shirt = false; return true; }
+  shirt = false; chocolate = false; private delivered=false;
+  takeShirt() { if (this.shirt || this.chocolate || this.delivered) return false; this.shirt = true; return true; }
+  deliver() { if (!this.shirt || this.chocolate) return false; this.shirt = false; this.delivered=true; return true; }
 }
 export class QuestManager {
   stage: 'shirt' | 'station' | 'reward' | 'done' = 'shirt';

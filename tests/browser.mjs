@@ -21,10 +21,9 @@ for(const hero of ['sanya','mark']){
   const start=await page.evaluate(()=>({x:window.__mission.player.x,y:window.__mission.player.y}));
   await page.keyboard.down('d');await page.waitForTimeout(450);await page.keyboard.up('d');
   const moved=await page.evaluate(()=>({x:window.__mission.player.x,y:window.__mission.player.y}));assert.ok(moved.x>start.x+20,'walking changes player position');
-  // Place beside an actual solid building and walk into its physics body.
-  await page.evaluate(()=>{const s=window.__mission;s.player.body.reset(155,144);});
+  const wallLeft=await page.evaluate(()=>{const s=window.__mission,w=s.city.walls.getChildren().find(w=>{const b=w.body,x=Math.floor((b.x+46)/96),y=Math.floor((b.y+46)/96);return b.width===92&&x>1&&y>1&&s.city.grid[y]?.[x-1]===0;});s.player.body.reset(w.body.x-40,w.body.y+23);return w.body.x;});
   await page.keyboard.down('d');await page.waitForTimeout(1300);await page.keyboard.up('d');
-  const collisionX=await page.evaluate(()=>window.__mission.player.x);assert.ok(collisionX<190,'building blocks player');
+  const collisionX=await page.evaluate(()=>window.__mission.player.x);assert.ok(collisionX+10<=wallLeft+1,'building blocks player');
   // Collision-aware path validation at 12px sampling, with real wall body extents.
   const reachable=await page.evaluate(()=>{
     const s=window.__mission,blocked=s.city.walls.getChildren().map(w=>w.body);
@@ -52,7 +51,7 @@ const phone=await browser.newContext({viewport:{width:390,height:844},isMobile:t
 await mobile.goto('http://localhost:5173/portland-mission/?qa=1');await mobile.locator('#start').click();await mobile.locator('#play').click();await mobile.locator('#joystick').waitFor({state:'visible'});await mobile.locator('#interact').waitFor({state:'visible'});
 assert.equal(await mobile.evaluate(()=>document.documentElement.scrollWidth),390);
 const joy=await mobile.locator('#joystick').boundingBox();const before=await mobile.evaluate(()=>window.__mission.player.x);
-await mobile.dispatchEvent('#joystick','pointerdown',{pointerId:1,pointerType:'touch',clientX:joy.x+joy.width/2+30,clientY:joy.y+joy.height/2,bubbles:true});await mobile.waitForTimeout(400);await mobile.dispatchEvent('#joystick','pointerup',{pointerId:1,pointerType:'touch',bubbles:true});
+await mobile.mouse.move(joy.x+joy.width/2+30,joy.y+joy.height/2);await mobile.mouse.down();await mobile.waitForTimeout(400);await mobile.mouse.up();
 assert.ok(await mobile.evaluate(()=>window.__mission.player.x)>before+10);await mobile.screenshot({path:out+'mobile.png'});
 assert.deepEqual(errors,[]);await writeFile(out+'results.json',JSON.stringify({passed:true,heroes:['sanya','mark'],errors,checks:['menu','help','selection','movement','physics collision','physical reachability','Den without shirt','CDEK rejection and repeat','shirt and repeat protection','pause timer','finale','victory and best time','replay','touch joystick','mobile layout']},null,2));
 console.log('Browser checks passed for both heroes and phone. No JS errors.');await browser.close();
